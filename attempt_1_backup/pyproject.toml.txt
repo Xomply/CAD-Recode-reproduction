@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cad-recode"
+version = "0.0.1"
+dependencies = [
+    "torch",
+    "transformers",
+    "wandb",
+    "cadquery",
+]
+
+[tool.setuptools.packages.find]      # NEW 🔽
+include = ["cad_recode*"]            # only pick up cad_recode
+exclude = ["data*", "config*"]       # ignore the other dirs

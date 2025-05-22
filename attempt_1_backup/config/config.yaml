@@ -1,0 +1,26 @@
+# config.yaml
+data:
+  path: "D:/ML/CAD-Recode reproduction/recode-dataset/cad_recode_dataset"   # ← adjust
+  n_points: 256
+  noise_std: 0.01
+  noise_prob: 0.5
+
+model:
+  name: "Qwen/Qwen2-1.5B"               # 0.5 B probably OOM on a 3060
+  freeze_decoder: false                 # set true if RAM is tight
+
+training:
+  batch_size: 2                         # fits on 12 GB RTX 3060
+  lr: 2e-4
+  weight_decay: 0.01
+  max_iterations: 1000                 # try a short smoke-test first
+  warmup_steps: 200
+  max_epochs: 10                       # safety cap
+  val_interval: 500
+  output_dir: "./outputs"
+  num_workers: 0                        # ← critical for Windows/Jupyter
+
+logging:
+  use_wandb: false                      # turn on later if you like
+  project_name: "cad-recode"
+  log_interval: 2

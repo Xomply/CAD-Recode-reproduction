@@ -1,0 +1,38 @@
+# Default configuration for CAD-Recode on DelftBlue
+# =================================================
+# Edit freely or override individual fields via Hydra:
+#   python -m cad_recode.train training.batch_size=16 model.freeze_decoder=true
+
+data:
+  path: "/tudelft/data/cad_recode_dataset"   # ← update to DelftBlue storage path
+  n_points: 256
+  noise_std: 0.01
+  noise_prob: 0.5
+
+model:
+  name: "Qwen/Qwen2-1.5B"
+  freeze_decoder: false          # set true for inference or low-memory tests
+
+training:
+  batch_size: 32                 # global (will be split across GPUs)
+  lr: 2.0e-4
+  weight_decay: 0.01
+  max_epochs: 5                  # typical full run ≤24h on 4×V100
+  max_steps: 30000               # if you prefer step-based stopping
+  warmup_steps: 2000
+  val_interval: 1000             # validate every N steps
+  accumulation_steps: 1          # set >1 to simulate larger batches
+  num_workers: 8
+  output_dir: "results/run_1"    # each run gets its own folder
+  resume_path: ""                # filled automatically by Slurm script
+
+logging:
+  log_interval: 100
+  use_wandb: false
+  project_name: "cad-recode"
+
+# Evaluate-specific defaults (overridden on CLI for eval.py)
+split: "val"
+max_length: 256
+num_candidates: 1
+save_visuals: false
